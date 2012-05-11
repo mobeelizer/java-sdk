@@ -21,21 +21,20 @@ Ready-to-use version of the Mobeelizer SDK framework is deployed at [http://sdk.
 
 Mobeelizer SDK is also distibuted using Maven.
 
-``<dependencies>
-	<dependency>
-		<groupId>com.mobeelizer</groupId>
-		<artifactId>java-sdk</artifactId>
-		<version>1.1.0</version>
-	</dependency>
-</dependencies>
-
-<repositories>
-	<repository>
-		<id>qcadoo-releases-repository</id>
-		<url>http://nexus.qcadoo.org/content/repositories/releases</url>
-	</repository>
-</repositories>
-``
+	<dependencies>
+		<dependency>
+			<groupId>com.mobeelizer</groupId>
+			<artifactId>java-sdk</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+	</dependencies>
+	
+	<repositories>
+		<repository>
+			<id>qcadoo-releases-repository</id>
+			<url>http://nexus.qcadoo.org/content/repositories/releases</url>
+		</repository>
+	</repositories>
 
 # Copyright
 
