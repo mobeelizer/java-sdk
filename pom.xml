@@ -1,0 +1,281 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>java-sdk</artifactId>
+	<groupId>com.mobeelizer</groupId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>Mobeelizer Java SDK</name>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>com.mobeelizer</groupId>
+			<artifactId>java-common</artifactId>
+			<version>1.0.0-SNAPSHOT</version>			
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.1.3</version>
+			<exclusions>
+				<exclusion>
+		          <groupId>commons-codec</groupId>
+		          <artifactId>commons-codec</artifactId>
+		        </exclusion>
+			</exclusions>			
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>4.1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20090211</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>1.4.11</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>1.4.11</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.0</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>target/filtered-sources/java</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/main/java/</directory>
+				<includes>
+					<include>com/mobeelizer/java/Mobeelizer.java</include>
+				</includes>
+				<filtering>true</filtering>
+				<targetPath>../filtered-sources/java</targetPath>
+			</resource>
+			<resource>
+				<directory>src/main/java/</directory>
+				<excludes>
+					<exclude>com/mobeelizer/java/Mobeelizer.java</exclude>
+				</excludes>
+				<filtering>true</filtering>
+				<targetPath>../filtered-sources/java</targetPath>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.8.1</version>
+				<configuration>
+					<show>public</show>
+					<doctitle>Mobeelizer Java SDK</doctitle>
+					<notree>true</notree>
+					<nohelp>true</nohelp>
+					<noindex>true</noindex>
+					<use>false</use>
+					<packagesheader><![CDATA[<a href="http://www.mobeelizer.com"><img src="http://unbouncepages-com.s3.amazonaws.com/www.mobeelizer.com/mobeelizer.original.jpg" /></a>]]></packagesheader>
+					<bottom><![CDATA[Copyright &#169; 2011-{currentYear} <a href="http://www.mobeelizer.com" target="_blank">Mobeelizer Ltd</a>. All Rights Reserved.]]></bottom>
+					<excludePackageNames>com.mobeelizer.java.connection:com.mobeelizer.java.definition:com.mobeelizer.java.file:com.mobeelizer.java.model:com.mobeelizer.java.sync</excludePackageNames>
+					<includeDependencySources>true</includeDependencySources>
+					<dependencySourceIncludes>
+						<dependencySourceInclude>com.mobeelizer:*</dependencySourceInclude>
+					</dependencySourceIncludes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>javadoc-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.7</version>
+				<executions>
+					<execution>
+						<id>deploy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12</version>
+				<configuration>
+					<argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=512m</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>deploy-to-amazon</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.7</version>
+						<configuration>
+							<target>
+								<taskdef name="s3upload" classname="dak.ant.taskdefs.S3Upload"
+									classpathref="maven.plugin.classpath" />
+								<copy
+									file="${basedir}/target/${project.artifactId}-${project.version}.jar"
+									tofile="${basedir}/target/mobeelizer-java-sdk.jar" />
+								<copy
+									file="${basedir}/target/${project.artifactId}-${project.version}-javadoc.jar"
+									tofile="${basedir}/target/mobeelizer-java-sdk-javadoc.jar" />
+								<s3upload verbose="true" accessId="${accessId}"
+									secretKey="${secretKey}" bucket="sdk.mobeelizer.com"
+									publicRead="true">
+									<fileset dir="${basedir}/target/" includes="mobeelizer-*.jar" />
+								</s3upload>
+								<s3upload verbose="true" accessId="${accessId}"
+									secretKey="${secretKey}" bucket="sdk.mobeelizer.com"
+									publicRead="true" prefix="java/">
+									<fileset dir="${basedir}/target/apidocs/" includes="**/*" />
+								</s3upload>
+							</target>
+						</configuration>
+						<dependencies>
+							<dependency>
+								<groupId>thirdparty</groupId>
+								<artifactId>awstasks</artifactId>
+								<version>0.3</version>
+							</dependency>
+						</dependencies>
+						<executions>
+							<execution>
+								<phase>install</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
+	
+	<pluginRepositories>
+		<pluginRepository>
+			<id>conjars</id>
+			<url>http://conjars.org/repo/</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>qcadoo-snapshots-repository</id>
+			<url>http://nexus.qcadoo.org/content/repositories/snapshots</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<repositories>
+		<repository>
+			<id>qcadoo-releases-repository</id>
+			<url>http://nexus.qcadoo.org/content/repositories/releases</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+				<updatePolicy>never</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>qcadoo-snapshots-repository</id>
+			<url>http://nexus.qcadoo.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>interval:5</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+	
+	<distributionManagement>
+		<repository>
+			<id>qcadoo-releases-repository</id>
+			<url>http://nexus.qcadoo.org/content/repositories/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>qcadoo-snapshots-repository</id>
+			<url>http://nexus.qcadoo.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+</project>
