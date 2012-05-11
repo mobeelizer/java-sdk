@@ -45,7 +45,7 @@ import com.mobeelizer.java.definition.MobeelizerDefinitionParser;
 /**
  * Entry point to the Mobeelizer application.
  * 
- * @since
+ * @since 1.0
  */
 public class Mobeelizer {
 

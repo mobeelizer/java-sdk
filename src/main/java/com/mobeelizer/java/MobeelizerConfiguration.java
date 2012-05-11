@@ -127,8 +127,8 @@ public class MobeelizerConfiguration {
     /**
      * Sets the password of the user.
      * 
-     * @param user
-     *            user
+     * @param password
+     *            password
      * @since 1.0
      */
     public void setPassword(final String password) {

@@ -53,7 +53,7 @@ public interface MobeelizerSyncCallback {
      *            exception
      * @since 1.0
      */
-    void onSyncFinishedWithError(final Exception e);
+    void onSyncFinishedWithError(final Exception exception);
 
     /**
      * Method invoked when the synchronization is finished with validation errors.
