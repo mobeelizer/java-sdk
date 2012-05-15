@@ -204,7 +204,7 @@
 			        <replaceExisting>true</replaceExisting>
 			        <replaceExisting>true</replaceExisting>
 			        <ignoreTypes>
-			            <ignoreType>source</ignoreType>
+			            <ignoreType>java-source</ignoreType>
 			            <ignoreType>javadoc</ignoreType>
 			        </ignoreTypes>
 			    </configuration>
