@@ -213,6 +213,7 @@
 			    <version>1.0.2</version>
 			    <configuration>
 			        <replaceExisting>true</replaceExisting>
+			        <replaceExisting>true</replaceExisting>
 			        <ignoreTypes>
 			            <ignoreType>source</ignoreType>
 			            <ignoreType>javadoc</ignoreType>
@@ -224,7 +225,7 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.3</version>
 				<configuration>
-					<goals>deploy antrun:run github-deploy:deploy</goals>
+					<completionGoals>antrun:run github-deploy:deploy</completionGoals>
 				</configuration>			    
 			</plugin>
 		</plugins>
