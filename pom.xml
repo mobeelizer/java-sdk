@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>java-sdk</artifactId>
 	<groupId>com.mobeelizer</groupId>
-	<version>1.1.0</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>Mobeelizer Java SDK</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -215,6 +215,7 @@
 				<version>2.3</version>
 				<configuration>
 					<completionGoals>antrun:run github-deploy:deploy</completionGoals>
+					<arguments>-DreleaseVersion=${releaseVersion} -DaccessId=${accessId} -DsecretKey=${secretKey}</arguments>
 				</configuration>			    
 			</plugin>
 		</plugins>
