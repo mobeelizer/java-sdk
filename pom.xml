@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>java-sdk</artifactId>
 	<groupId>com.mobeelizer</groupId>
-	<version>1.1.0</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>Mobeelizer Java SDK</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -178,8 +178,8 @@
 				<configuration>
 					<target>
 						<taskdef name="s3upload" classname="dak.ant.taskdefs.S3Upload" classpathref="maven.plugin.classpath" />
-						<copy file="${basedir}/target/${project.artifactId}-${project.version}.jar" tofile="${basedir}/target/mobeelizer-java-sdk.jar" />
-						<copy file="${basedir}/target/${project.artifactId}-${project.version}-javadoc.jar" tofile="${basedir}/target/mobeelizer-java-sdk-javadoc.jar" />
+						<copy file="${basedir}/target/${project.artifactId}-${releaseVersion}.jar" tofile="${basedir}/target/mobeelizer-java-sdk.jar" />
+						<copy file="${basedir}/target/${project.artifactId}-${releaseVersion}-javadoc.jar" tofile="${basedir}/target/mobeelizer-java-sdk-javadoc.jar" />
 						<s3upload verbose="true" accessId="${accessId}" secretKey="${secretKey}" bucket="sdk.mobeelizer.com" publicRead="true">
 							<fileset dir="${basedir}/target/" includes="mobeelizer-*.jar" />
 						</s3upload>
