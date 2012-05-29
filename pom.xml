@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>java-sdk</artifactId>
 	<groupId>com.mobeelizer</groupId>
-	<version>1.2.0</version>
+	<version>1.3.0-SNAPSHOT</version>
 	<name>Mobeelizer Java SDK</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -278,7 +278,7 @@
 	    <connection>scm:git:ssh://github.com/mobeelizer/java-sdk.git</connection>
         <developerConnection>scm:git:git@github.com:mobeelizer/java-sdk.git</developerConnection>
         <url>http://github.com/mobeelizer/java-sdk</url>
-    <tag>1.2.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
 </project>
