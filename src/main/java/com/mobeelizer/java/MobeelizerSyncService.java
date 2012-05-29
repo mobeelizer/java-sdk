@@ -138,6 +138,11 @@ class MobeelizerSyncService {
                     return file;
                 }
 
+                @Override
+                public File getFile() {
+                    throw new UnsupportedOperationException();
+                }
+
             });
         }
 
