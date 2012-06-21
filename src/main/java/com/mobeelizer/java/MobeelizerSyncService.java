@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import com.mobeelizer.java.api.MobeelizerFile;
 import com.mobeelizer.java.api.MobeelizerModel;
+import com.mobeelizer.java.connection.MobeelizerConnectionResult;
 import com.mobeelizer.java.connection.MobeelizerConnectionService;
 import com.mobeelizer.java.definition.MobeelizerErrorsHolder;
 import com.mobeelizer.java.model.MobeelizerModelImpl;
@@ -75,8 +76,9 @@ class MobeelizerSyncService {
                 ticket = connectionService.sendSyncDiffRequest(outputFile);
             }
 
-            if (!connectionService.waitUntilSyncRequestComplete(ticket)) {
-                callback.onSyncFinishedWithError(new IllegalStateException("Cannot get status of synchronization."));
+            MobeelizerConnectionResult result = connectionService.waitUntilSyncRequestComplete(ticket);
+            if (!result.isSuccess()) {
+                callback.onSyncFinishedWithError(new IllegalStateException(result.getMessage()));
                 return;
             }
 
@@ -101,7 +103,7 @@ class MobeelizerSyncService {
                         }
 
                     });
-        } catch (IOException e) {
+        } catch (Exception e) {
             callback.onSyncFinishedWithError(e);
         } finally {
             if (outputFile != null && !outputFile.delete()) {
@@ -180,12 +182,16 @@ class MobeelizerSyncService {
         try {
             outputData = new MobeelizerOutputData(outputFile, File.createTempFile("mobeelizer", "output"));
 
-            for (Object entity : entities) {
-                outputData.writeEntity(getModel(entity.getClass()).getJsonEntityFromEntity(entity, errors));
+            if (entities != null) {
+                for (Object entity : entities) {
+                    outputData.writeEntity(getModel(entity.getClass()).getJsonEntityFromEntity(entity, errors));
+                }
             }
 
-            for (MobeelizerFile file : files) {
-                outputData.writeFile(file.getGuid(), file.getInputStream());
+            if (files != null) {
+                for (MobeelizerFile file : files) {
+                    outputData.writeFile(file.getGuid(), file.getInputStream());
+                }
             }
 
         } catch (IOException e) {
