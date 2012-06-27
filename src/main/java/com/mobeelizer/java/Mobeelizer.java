@@ -344,10 +344,6 @@ public class Mobeelizer {
      * @see MobeelizerSyncCallback
      */
     public void syncAllAndWait(final MobeelizerSyncCallback callback) {
-    	syncService.syncAll(callback);
-    }
-
-    public void syncAll2(final MobeelizerSyncCallback callback) {
         syncService.syncAll(callback);
     }
 
@@ -364,7 +360,7 @@ public class Mobeelizer {
      * @see MobeelizerSyncCallback
      */
     public void sync(final Iterable<Object> entities, final Iterable<MobeelizerFile> files, final MobeelizerSyncCallback callback) {
-    	new Thread(new Runnable() {
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -373,7 +369,7 @@ public class Mobeelizer {
 
         }).run();
     }
-    
+
     /**
      * Start a differential sync. After finished callback will be invoked.
      * 
@@ -386,11 +382,8 @@ public class Mobeelizer {
      * @since 1.3
      * @see MobeelizerSyncCallback
      */
-    public void syncAndWait(final Iterable<Object> entities, final Iterable<MobeelizerFile> files, final MobeelizerSyncCallback callback) {
-    	syncService.sync(entities, files, callback);
-    }
-
-    public void sync2(final Iterable<Object> entities, final Iterable<MobeelizerFile> files, final MobeelizerSyncCallback callback) {
+    public void syncAndWait(final Iterable<Object> entities, final Iterable<MobeelizerFile> files,
+            final MobeelizerSyncCallback callback) {
         syncService.sync(entities, files, callback);
     }
 
