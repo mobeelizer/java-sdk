@@ -25,8 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import org.apache.http.client.methods.HttpRequestBase;
 
@@ -58,8 +56,6 @@ public class Mobeelizer {
     private final MobeelizerConnectionService connectionService;
 
     private final Set<MobeelizerModel> definition = new HashSet<MobeelizerModel>();
-
-    private final Executor executor = Executors.newSingleThreadExecutor();
 
     private final MobeelizerConfiguration configuration;
 
@@ -329,14 +325,26 @@ public class Mobeelizer {
      * @see MobeelizerSyncCallback
      */
     public void syncAll(final MobeelizerSyncCallback callback) {
-        executor.execute(new Runnable() {
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
                 syncService.syncAll(callback);
             }
 
-        });
+        }).run();
+    }
+
+    /**
+     * Start a full sync. After finished callback will be invoked.
+     * 
+     * @param callback
+     *            callback
+     * @since 1.3
+     * @see MobeelizerSyncCallback
+     */
+    public void syncAllAndWait(final MobeelizerSyncCallback callback) {
+    	syncService.syncAll(callback);
     }
 
     public void syncAll2(final MobeelizerSyncCallback callback) {
@@ -356,14 +364,30 @@ public class Mobeelizer {
      * @see MobeelizerSyncCallback
      */
     public void sync(final Iterable<Object> entities, final Iterable<MobeelizerFile> files, final MobeelizerSyncCallback callback) {
-        executor.execute(new Runnable() {
+    	new Thread(new Runnable() {
 
             @Override
             public void run() {
                 syncService.sync(entities, files, callback);
             }
 
-        });
+        }).run();
+    }
+    
+    /**
+     * Start a differential sync. After finished callback will be invoked.
+     * 
+     * @param entities
+     *            new entities to send to the cloud
+     * @param files
+     *            new files to send to the cloud
+     * @param callback
+     *            callback
+     * @since 1.3
+     * @see MobeelizerSyncCallback
+     */
+    public void syncAndWait(final Iterable<Object> entities, final Iterable<MobeelizerFile> files, final MobeelizerSyncCallback callback) {
+    	syncService.sync(entities, files, callback);
     }
 
     public void sync2(final Iterable<Object> entities, final Iterable<MobeelizerFile> files, final MobeelizerSyncCallback callback) {
