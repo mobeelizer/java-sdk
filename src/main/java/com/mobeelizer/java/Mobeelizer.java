@@ -478,4 +478,12 @@ public class Mobeelizer {
         }
     }
 
+    void registerForRemoteNotifications(final String token) throws IOException {
+        connectionService.registerForRemoteNotifications(token);
+    }
+
+    void unregisterForRemoteNotifications(final String token) throws IOException {
+        connectionService.unregisterForRemoteNotifications(token);
+    }
+
 }
