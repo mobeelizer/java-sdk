@@ -1,5 +1,7 @@
 package com.mobeelizer.java;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -115,10 +117,20 @@ class MobeelizerSyncService {
         }
     }
 
-    private Iterable<MobeelizerFile> prepareInputFileIterator(final MobeelizerInputData inputData) {
+    private Iterable<MobeelizerFile> prepareInputFileIterator(final MobeelizerInputData inputData) throws IOException {
         List<MobeelizerFile> files = new ArrayList<MobeelizerFile>();
 
         for (final String file : inputData.getFiles()) {
+        	InputStream input = inputData.getFile(file);
+        	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = input.read(buffer)) > -1 ) {
+                baos.write(buffer, 0, len);
+            }
+            baos.flush();
+            final InputStream copyInput = new ByteArrayInputStream(baos.toByteArray());
+        	
             files.add(new MobeelizerFile() {
 
                 @Override
@@ -128,11 +140,7 @@ class MobeelizerSyncService {
 
                 @Override
                 public InputStream getInputStream() {
-                    try {
-                        return inputData.getFile(file);
-                    } catch (IOException e) {
-                        throw new IllegalStateException(e.getMessage(), e);
-                    }
+                	return copyInput;
                 }
 
                 @Override
