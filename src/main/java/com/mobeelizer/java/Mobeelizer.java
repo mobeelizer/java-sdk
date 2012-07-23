@@ -20,6 +20,8 @@
 
 package com.mobeelizer.java;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
@@ -63,7 +65,7 @@ public class Mobeelizer {
      * Version of Mobeelizer SDK.
      */
     public static final String VERSION = "${project.version}";
-
+    
     /**
      * Creates new Mobeelizer SDK.
      * 
