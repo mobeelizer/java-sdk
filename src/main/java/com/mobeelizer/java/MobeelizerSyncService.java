@@ -21,9 +21,10 @@ import com.mobeelizer.java.definition.MobeelizerErrorsHolder;
 import com.mobeelizer.java.model.MobeelizerModelImpl;
 import com.mobeelizer.java.sync.MobeelizerInputData;
 import com.mobeelizer.java.sync.MobeelizerJsonEntity;
+import com.mobeelizer.java.sync.MobeelizerJsonEntity.ConflictState;
 import com.mobeelizer.java.sync.MobeelizerOutputData;
 
-class MobeelizerSyncService {
+public class MobeelizerSyncService {
 
     private static final Logger logger = LoggerFactory.getLogger(MobeelizerSyncService.class);
 
@@ -33,10 +34,15 @@ class MobeelizerSyncService {
 
     private final Map<String, MobeelizerModelImpl> definitionByName = new HashMap<String, MobeelizerModelImpl>();
 
+    private boolean hasDefinition = false;
+
     public MobeelizerSyncService(final Set<MobeelizerModel> definition, final MobeelizerConnectionService connectionService) {
-        for (MobeelizerModel model : definition) {
-            definitionByClass.put(model.getMappingClass(), (MobeelizerModelImpl) model);
-            definitionByName.put(model.getName(), (MobeelizerModelImpl) model);
+        if (definition != null) {
+            hasDefinition = true;
+            for (MobeelizerModel model : definition) {
+                definitionByClass.put(model.getMappingClass(), (MobeelizerModelImpl) model);
+                definitionByName.put(model.getName(), (MobeelizerModelImpl) model);
+            }
         }
         this.connectionService = connectionService;
     }
@@ -166,12 +172,21 @@ class MobeelizerSyncService {
     }
 
     private Iterable<Object> prepareInputEntitiesIterator(final MobeelizerInputData inputData) {
+
         List<Object> entities = new ArrayList<Object>();
 
         for (MobeelizerJsonEntity entity : inputData.getInputData()) {
-            entities.add(getModel(entity.getModel()).getEntityFromJsonEntity(entity));
+            if (hasDefinition) {
+                entities.add(getModel(entity.getModel()).getEntityFromJsonEntity(entity));
+            } else {
+                Map<String, String> entityMap = new HashMap<String, String>(entity.getFields());
+                entityMap.put("model", entity.getModel());
+                entityMap.put("guid", entity.getGuid());
+                entityMap.put("owner", entity.getOwner());
+                entityMap.put("conflicted", (entity.getConflictState() != ConflictState.NO_IN_CONFLICT) + "");
+                entities.add(entityMap);
+            }
         }
-
         return entities;
     }
 
@@ -184,7 +199,21 @@ class MobeelizerSyncService {
 
             if (entities != null) {
                 for (Object entity : entities) {
-                    outputData.writeEntity(getModel(entity.getClass()).getJsonEntityFromEntity(entity, errors));
+                    if (hasDefinition) {
+                        outputData.writeEntity(getModel(entity.getClass()).getJsonEntityFromEntity(entity, errors));
+                    } else {
+                        @SuppressWarnings("unchecked")
+                        Map<String, String> entityMap = new HashMap<String, String>((Map<String, String>) entity);
+                        MobeelizerJsonEntity jsonEntity = new MobeelizerJsonEntity();
+                        jsonEntity.setModel(entityMap.get("model"));
+                        jsonEntity.setGuid(entityMap.get("guid"));
+                        jsonEntity.setOwner(entityMap.get("owner"));
+                        entityMap.remove("model");
+                        entityMap.remove("guid");
+                        entityMap.remove("owner");
+                        jsonEntity.setFields(entityMap);
+                        outputData.writeEntity(jsonEntity);
+                    }
                 }
             }
 
@@ -202,5 +231,4 @@ class MobeelizerSyncService {
             }
         }
     }
-
 }
