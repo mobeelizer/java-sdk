@@ -15,11 +15,11 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mobeelizer.java.api.MobeelizerDatabaseExceptionBuilder;
 import com.mobeelizer.java.api.MobeelizerFile;
 import com.mobeelizer.java.api.MobeelizerModel;
 import com.mobeelizer.java.connection.MobeelizerConnectionResult;
 import com.mobeelizer.java.connection.MobeelizerConnectionService;
-import com.mobeelizer.java.definition.MobeelizerErrorsHolder;
 import com.mobeelizer.java.model.MobeelizerModelImpl;
 import com.mobeelizer.java.sync.MobeelizerInputData;
 import com.mobeelizer.java.sync.MobeelizerJsonEntity;
@@ -72,12 +72,12 @@ public class MobeelizerSyncService {
             } else {
                 outputFile = File.createTempFile("mobeelizer", "sync");
 
-                MobeelizerErrorsHolder errors = new MobeelizerErrorsHolder();
+                MobeelizerDatabaseExceptionBuilder errorsBuilder = new MobeelizerDatabaseExceptionBuilder();
 
-                prepareOutputFile(outputFile, outputEntities, outputFiles, errors);
+                prepareOutputFile(outputFile, outputEntities, outputFiles, errorsBuilder);
 
-                if (!errors.isValid()) {
-                    callback.onSyncFinishedWithError(errors);
+                if (!errorsBuilder.hasNoErrors()) {
+                    callback.onSyncFinishedWithError(errorsBuilder.build());
                     return;
                 }
 
@@ -127,16 +127,16 @@ public class MobeelizerSyncService {
         List<MobeelizerFile> files = new ArrayList<MobeelizerFile>();
 
         for (final String file : inputData.getFiles()) {
-        	InputStream input = inputData.getFile(file);
-        	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            InputStream input = inputData.getFile(file);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
             int len;
-            while ((len = input.read(buffer)) > -1 ) {
+            while ((len = input.read(buffer)) > -1) {
                 baos.write(buffer, 0, len);
             }
             baos.flush();
             final InputStream copyInput = new ByteArrayInputStream(baos.toByteArray());
-        	
+
             files.add(new MobeelizerFile() {
 
                 @Override
@@ -146,7 +146,7 @@ public class MobeelizerSyncService {
 
                 @Override
                 public InputStream getInputStream() {
-                	return copyInput;
+                    return copyInput;
                 }
 
                 @Override
@@ -199,7 +199,7 @@ public class MobeelizerSyncService {
     }
 
     private void prepareOutputFile(final File outputFile, final Iterable<Object> entities, final Iterable<MobeelizerFile> files,
-            final MobeelizerErrorsHolder errors) {
+            final MobeelizerDatabaseExceptionBuilder errors) {
         MobeelizerOutputData outputData = null;
 
         try {
