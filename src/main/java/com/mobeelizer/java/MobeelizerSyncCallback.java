@@ -20,7 +20,7 @@
 
 package com.mobeelizer.java;
 
-import com.mobeelizer.java.api.MobeelizerDatabaseError;
+import com.mobeelizer.java.api.MobeelizerErrors;
 import com.mobeelizer.java.api.MobeelizerFile;
 
 /**
@@ -62,6 +62,6 @@ public interface MobeelizerSyncCallback {
      *            errors
      * @since 1.0
      */
-    void onSyncFinishedWithError(final MobeelizerDatabaseError databaseError);
+    void onSyncFinishedWithError(final MobeelizerErrors databaseError);
 
 }

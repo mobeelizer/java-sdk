@@ -15,7 +15,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mobeelizer.java.api.MobeelizerDatabaseExceptionBuilder;
+import com.mobeelizer.java.api.MobeelizerErrorsBuilder;
 import com.mobeelizer.java.api.MobeelizerFile;
 import com.mobeelizer.java.api.MobeelizerModel;
 import com.mobeelizer.java.connection.MobeelizerConnectionResult;
@@ -72,12 +72,12 @@ public class MobeelizerSyncService {
             } else {
                 outputFile = File.createTempFile("mobeelizer", "sync");
 
-                MobeelizerDatabaseExceptionBuilder errorsBuilder = new MobeelizerDatabaseExceptionBuilder();
+                MobeelizerErrorsBuilder errorsBuilder = new MobeelizerErrorsBuilder();
 
                 prepareOutputFile(outputFile, outputEntities, outputFiles, errorsBuilder);
 
                 if (!errorsBuilder.hasNoErrors()) {
-                    callback.onSyncFinishedWithError(errorsBuilder.build());
+                    callback.onSyncFinishedWithError(errorsBuilder.createWhenErrors());
                     return;
                 }
 
@@ -199,7 +199,7 @@ public class MobeelizerSyncService {
     }
 
     private void prepareOutputFile(final File outputFile, final Iterable<Object> entities, final Iterable<MobeelizerFile> files,
-            final MobeelizerDatabaseExceptionBuilder errors) {
+            final MobeelizerErrorsBuilder errors) {
         MobeelizerOutputData outputData = null;
 
         try {
