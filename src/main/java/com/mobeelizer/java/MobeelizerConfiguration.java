@@ -12,150 +12,168 @@ import com.mobeelizer.java.api.MobeelizerMode;
  */
 public class MobeelizerConfiguration {
 
-    private InputStream definition;
+	private InputStream definition;
 
-    private String device;
+	private String device;
 
-    private String deviceIdentifier = "0";
+	private String deviceIdentifier = "0";
 
-    private String packageName;
+	private String packageName;
 
-    private MobeelizerMode mode = MobeelizerMode.TEST;
+	private MobeelizerMode mode = MobeelizerMode.TEST;
 
-    private String instance;
+	private String instance;
 
-    private String user;
+	private String user;
 
-    private String password;
+	private String password;
 
-    private String url;
+	private String url;
 
-    InputStream getDefinition() {
-        return definition;
-    }
+	private String pushNotificationUrl;
 
-    /**
-     * Sets the stream with the definition XML.
-     * 
-     * @param definition
-     *            definition
-     * @since 1.0
-     */
-    public void setDefinition(final InputStream definition) {
-        this.definition = definition;
-    }
+	InputStream getDefinition() {
+		return definition;
+	}
 
-    String getDevice() {
-        return device;
-    }
+	/**
+	 * Sets the stream with the definition XML.
+	 * 
+	 * @param definition
+	 *            definition
+	 * @since 1.0
+	 */
+	public void setDefinition(final InputStream definition) {
+		this.definition = definition;
+	}
 
-    /**
-     * Sets the name of the device.
-     * 
-     * @param device
-     *            device
-     * @since 1.0
-     */
-    public void setDevice(final String device) {
-        this.device = device;
-    }
+	String getDevice() {
+		return device;
+	}
 
-    String getPackageName() {
-        return packageName;
-    }
+	/**
+	 * Sets the name of the device.
+	 * 
+	 * @param device
+	 *            device
+	 * @since 1.0
+	 */
+	public void setDevice(final String device) {
+		this.device = device;
+	}
 
-    /**
-     * Sets the name of the package containing model classes.
-     * 
-     * @param packageName
-     *            packageName
-     * @since 1.0
-     */
-    public void setPackageName(final String packageName) {
-        this.packageName = packageName;
-    }
+	String getPackageName() {
+		return packageName;
+	}
 
-    MobeelizerMode getMode() {
-        return mode;
-    }
+	/**
+	 * Sets the name of the package containing model classes.
+	 * 
+	 * @param packageName
+	 *            packageName
+	 * @since 1.0
+	 */
+	public void setPackageName(final String packageName) {
+		this.packageName = packageName;
+	}
 
-    /**
-     * Sets the mode. By default TEST is set.
-     * 
-     * @param mode
-     *            mode
-     * @since 1.0
-     */
-    public void setMode(final MobeelizerMode mode) {
-        this.mode = mode;
-    }
+	MobeelizerMode getMode() {
+		return mode;
+	}
 
-    String getInstance() {
-        return instance == null && mode != null ? mode.name().toLowerCase(Locale.ENGLISH) : instance;
-    }
+	/**
+	 * Sets the mode. By default TEST is set.
+	 * 
+	 * @param mode
+	 *            mode
+	 * @since 1.0
+	 */
+	public void setMode(final MobeelizerMode mode) {
+		this.mode = mode;
+	}
 
-    /**
-     * Sets the name of the instance. By default lower-cased mode is set (test or production).
-     * 
-     * @param instance
-     *            instance
-     * @since 1.0
-     */
-    public void setInstance(final String instance) {
-        this.instance = instance;
-    }
+	String getInstance() {
+		return instance == null && mode != null ? mode.name().toLowerCase(Locale.ENGLISH) : instance;
+	}
 
-    String getUser() {
-        return user;
-    }
+	/**
+	 * Sets the name of the instance. By default lower-cased mode is set (test
+	 * or production).
+	 * 
+	 * @param instance
+	 *            instance
+	 * @since 1.0
+	 */
+	public void setInstance(final String instance) {
+		this.instance = instance;
+	}
 
-    /**
-     * Sets the login of the user.
-     * 
-     * @param user
-     *            user
-     * @since 1.0
-     */
-    public void setUser(final String user) {
-        this.user = user;
-    }
+	String getUser() {
+		return user;
+	}
 
-    String getPassword() {
-        return password;
-    }
+	/**
+	 * Sets the login of the user.
+	 * 
+	 * @param user
+	 *            user
+	 * @since 1.0
+	 */
+	public void setUser(final String user) {
+		this.user = user;
+	}
 
-    /**
-     * Sets the password of the user.
-     * 
-     * @param password
-     *            password
-     * @since 1.0
-     */
-    public void setPassword(final String password) {
-        this.password = password;
-    }
+	String getPassword() {
+		return password;
+	}
 
-    void setUrl(final String url) {
-        this.url = url;
-    }
+	/**
+	 * Sets the password of the user.
+	 * 
+	 * @param password
+	 *            password
+	 * @since 1.0
+	 */
+	public void setPassword(final String password) {
+		this.password = password;
+	}
 
-    String getUrl() {
-        return url;
-    }
+	void setUrl(final String url) {
+		this.url = url;
+	}
 
-    /**
-     * Sets the string identifying the device.
-     * 
-     * @param deviceIdentifier
-     *            deviceIdentifier
-     * @since 1.0
-     */
-    public void setDeviceIdentifier(final String deviceIdentifier) {
-        this.deviceIdentifier = deviceIdentifier;
-    }
+	String getUrl() {
+		return url;
+	}
 
-    String getDeviceIdentifier() {
-        return deviceIdentifier;
-    }
+	/**
+	 * Sets the string identifying the device.
+	 * 
+	 * @param deviceIdentifier
+	 *            deviceIdentifier
+	 * @since 1.0
+	 */
+	public void setDeviceIdentifier(final String deviceIdentifier) {
+		this.deviceIdentifier = deviceIdentifier;
+	}
+
+	String getDeviceIdentifier() {
+		return deviceIdentifier;
+	}
+
+	/**
+	 * Sets the URL that will be receive push notifications.
+	 * 
+	 * @param pushNotificationUrl
+	 *            push notification URL
+	 * @since 1.3
+	 */
+	public void setPushNotificationUrl(String pushNotificationUrl) {
+		this.pushNotificationUrl = pushNotificationUrl;
+	}
+
+	public String getPushNotificationUrl() {
+		return pushNotificationUrl;
+	}
 
 }

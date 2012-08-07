@@ -183,7 +183,11 @@ public class Mobeelizer {
 		MobeelizerAuthenticateResponse authenticate;
 
 		try {
-			authenticate = connectionService.authenticate(configuration.getUser(), configuration.getPassword());
+			if (configuration.getPushNotificationUrl() != null) {
+				authenticate = connectionService.authenticate(configuration.getUser(), configuration.getPassword(), "http", configuration.getPushNotificationUrl());
+			} else {
+				authenticate = connectionService.authenticate(configuration.getUser(), configuration.getPassword());
+			}
 		} catch (IOException e) {
 			throw new IllegalStateException("Cannot authenticate user: " + e.getMessage(), e);
 		}
