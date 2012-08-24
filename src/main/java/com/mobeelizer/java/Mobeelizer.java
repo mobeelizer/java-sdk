@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.apache.http.client.methods.HttpRequestBase;
 
@@ -46,6 +47,8 @@ import com.mobeelizer.java.definition.MobeelizerDefinitionParser;
  * @since 1.0
  */
 public class Mobeelizer {
+
+	private static final Logger LOGGER = Logger.getLogger(Mobeelizer.class.getCanonicalName());
 
 	private final MobeelizerApplicationDefinition applicationDefinition;
 
@@ -110,12 +113,12 @@ public class Mobeelizer {
 
 			@Override
 			public void logInfo(final String message) {
-				// TODO
+				LOGGER.info(message);
 			}
 
 			@Override
 			public void logDebug(final String message) {
-				// TODO
+				LOGGER.fine(message);
 			}
 
 			@Override
