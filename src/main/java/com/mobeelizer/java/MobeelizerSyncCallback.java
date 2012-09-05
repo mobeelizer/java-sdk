@@ -22,6 +22,7 @@ package com.mobeelizer.java;
 
 import com.mobeelizer.java.api.MobeelizerErrors;
 import com.mobeelizer.java.api.MobeelizerFile;
+import com.mobeelizer.java.api.MobeelizerOperationError;
 
 /**
  * Callback used to notify when the synchronization is finished.
@@ -53,7 +54,7 @@ public interface MobeelizerSyncCallback {
      *            exception
      * @since 1.0
      */
-    void onSyncFinishedWithError(final Exception exception);
+    void onSyncFinishedWithError(final MobeelizerOperationError error);
 
     /**
      * Method invoked when the synchronization is finished with validation errors.

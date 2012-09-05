@@ -18,7 +18,8 @@ import org.slf4j.LoggerFactory;
 import com.mobeelizer.java.api.MobeelizerErrorsBuilder;
 import com.mobeelizer.java.api.MobeelizerFile;
 import com.mobeelizer.java.api.MobeelizerModel;
-import com.mobeelizer.java.connection.MobeelizerConnectionResult;
+import com.mobeelizer.java.api.MobeelizerOperationError;
+import com.mobeelizer.java.api.MobeelizerOperationStatus;
 import com.mobeelizer.java.connection.MobeelizerConnectionService;
 import com.mobeelizer.java.model.MobeelizerModelImpl;
 import com.mobeelizer.java.sync.MobeelizerInputData;
@@ -68,7 +69,12 @@ public class MobeelizerSyncService {
             final String ticket;
 
             if (isAllSynchronization) {
-                ticket = connectionService.sendSyncAllRequest();
+                MobeelizerOperationStatus<String> syncResult = connectionService.sendSyncAllRequest();
+                if (syncResult.getError() != null) {
+                    callback.onSyncFinishedWithError(syncResult.getError());
+                    return;
+                }
+                ticket = syncResult.getContent();
             } else {
                 outputFile = File.createTempFile("mobeelizer", "sync");
 
@@ -80,13 +86,17 @@ public class MobeelizerSyncService {
                     callback.onSyncFinishedWithError(errorsBuilder.createWhenErrors());
                     return;
                 }
-
-                ticket = connectionService.sendSyncDiffRequest(outputFile);
+                MobeelizerOperationStatus<String> syncResult = connectionService.sendSyncDiffRequest(outputFile);
+                if (syncResult.getError() != null) {
+                    callback.onSyncFinishedWithError(syncResult.getError());
+                    return;
+                }
+                ticket = syncResult.getContent();
             }
 
-            MobeelizerConnectionResult result = connectionService.waitUntilSyncRequestComplete(ticket);
-            if (!result.isSuccess()) {
-                callback.onSyncFinishedWithError(new IllegalStateException(result.getMessage()));
+            MobeelizerOperationError waitResult = connectionService.waitUntilSyncRequestComplete(ticket);
+            if (waitResult != null) {
+                callback.onSyncFinishedWithError(waitResult);
                 return;
             }
 
@@ -100,9 +110,12 @@ public class MobeelizerSyncService {
                         @Override
                         public void confirm() {
                             try {
-                                connectionService.confirmTask(ticket);
-                            } catch (IOException e) {
-                                logger.warn("Cannot confirm task: " + e.getMessage(), e);
+                                MobeelizerOperationError confirmResult = connectionService.confirmTask(ticket);
+                                if (confirmResult != null) {
+                                    logger.warn("Cannot confirm task: " + confirmResult.getMessage());
+                                    callback.onSyncFinishedWithError(confirmResult);
+                                    return;
+                                }
                             } finally {
                                 if (inputData != null) {
                                     inputData.close();
@@ -112,7 +125,7 @@ public class MobeelizerSyncService {
 
                     });
         } catch (Exception e) {
-            callback.onSyncFinishedWithError(e);
+            callback.onSyncFinishedWithError(MobeelizerOperationError.other(e));
         } finally {
             if (outputFile != null && !outputFile.delete()) {
                 logger.warn("Cannot delete file " + outputFile.getAbsolutePath());
