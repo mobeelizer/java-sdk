@@ -19,8 +19,9 @@ import com.mobeelizer.java.api.MobeelizerErrorsBuilder;
 import com.mobeelizer.java.api.MobeelizerFile;
 import com.mobeelizer.java.api.MobeelizerModel;
 import com.mobeelizer.java.api.MobeelizerOperationError;
-import com.mobeelizer.java.api.MobeelizerOperationStatus;
 import com.mobeelizer.java.connection.MobeelizerConnectionService;
+import com.mobeelizer.java.errors.MobeelizerOperationErrorImpl;
+import com.mobeelizer.java.errors.MobeelizerOperationStatus;
 import com.mobeelizer.java.model.MobeelizerModelImpl;
 import com.mobeelizer.java.sync.MobeelizerInputData;
 import com.mobeelizer.java.sync.MobeelizerJsonEntity;
@@ -125,7 +126,7 @@ public class MobeelizerSyncService {
 
                     });
         } catch (Exception e) {
-            callback.onSyncFinishedWithError(MobeelizerOperationError.other(e));
+            callback.onSyncFinishedWithError(MobeelizerOperationErrorImpl.exception(e));
         } finally {
             if (outputFile != null && !outputFile.delete()) {
                 logger.warn("Cannot delete file " + outputFile.getAbsolutePath());

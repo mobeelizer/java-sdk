@@ -33,7 +33,6 @@ import com.mobeelizer.java.api.MobeelizerFile;
 import com.mobeelizer.java.api.MobeelizerMode;
 import com.mobeelizer.java.api.MobeelizerModel;
 import com.mobeelizer.java.api.MobeelizerOperationError;
-import com.mobeelizer.java.api.MobeelizerOperationStatus;
 import com.mobeelizer.java.api.user.MobeelizerUser;
 import com.mobeelizer.java.connection.MobeelizerAuthenticateResponse;
 import com.mobeelizer.java.connection.MobeelizerConnectionService;
@@ -42,6 +41,7 @@ import com.mobeelizer.java.connection.MobeelizerConnectionServiceImpl;
 import com.mobeelizer.java.definition.MobeelizerApplicationDefinition;
 import com.mobeelizer.java.definition.MobeelizerDefinitionConverter;
 import com.mobeelizer.java.definition.MobeelizerDefinitionParser;
+import com.mobeelizer.java.errors.MobeelizerOperationStatus;
 
 /**
  * Entry point to the Mobeelizer application.

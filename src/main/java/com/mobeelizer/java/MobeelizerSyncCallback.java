@@ -48,10 +48,10 @@ public interface MobeelizerSyncCallback {
             final Iterable<String> deletedFiles, final MobeelizerConfirmSyncCallback confirmCallback);
 
     /**
-     * Method invoked when the synchronization is finished with exception.
+     * Method invoked when the synchronization is finished with error.
      * 
-     * @param exception
-     *            exception
+     * @param error
+     *            error
      * @since 1.0
      */
     void onSyncFinishedWithError(final MobeelizerOperationError error);
