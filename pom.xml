@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>java-sdk</artifactId>
 	<groupId>com.mobeelizer</groupId>
-	<version>1.7.0-SNAPSHOT</version>
+	<version>1.6.0-SNAPSHOT</version>
 	<name>Mobeelizer Java SDK</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -225,21 +225,13 @@
 					<description>${project.version} release of ${project.name}</description>
 					<override>true</override>               
 				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>upload</goal>
-						</goals>
-						<phase>release:perform</phase>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 			    <groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.3</version>
 				<configuration>
-					<goals>deploy antrun:run</goals>
+					<goals>deploy antrun:run ghDownloads:upload</goals>
 					<arguments>-DreleaseVersion=${releaseVersion} -DaccessId=${accessId} -DsecretKey=${secretKey}</arguments>
 				</configuration>			    
 			</plugin>
