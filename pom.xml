@@ -8,6 +8,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<github.global.server>github</github.global.server>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -217,17 +218,21 @@
 				</dependencies>
 			</plugin>
 			<plugin>
-			    <groupId>com.jakewharton</groupId>
-			    <artifactId>github-deploy-maven-plugin</artifactId>
-			    <version>1.0.2</version>
-			    <configuration>
-			        <replaceExisting>true</replaceExisting>
-			        <replaceExisting>true</replaceExisting>
-			        <ignoreTypes>
-			            <ignoreType>java-source</ignoreType>
-			            <ignoreType>javadoc</ignoreType>
-			        </ignoreTypes>
-			    </configuration>
+				<groupId>com.github.github</groupId>
+				<artifactId>downloads-maven-plugin</artifactId>
+				<version>0.6</version>
+				<configuration>
+					<description>${project.version} release of ${project.name}</description>
+					<override>true</override>               
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>upload</goal>
+						</goals>
+						<phase>deploy</phase>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 			    <groupId>org.apache.maven.plugins</groupId>
