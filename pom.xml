@@ -230,7 +230,7 @@
 						<goals>
 							<goal>upload</goal>
 						</goals>
-						<phase>deploy</phase>
+						<phase>release</phase>
 					</execution>
 				</executions>
 			</plugin>
