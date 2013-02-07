@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,10 @@ import org.slf4j.LoggerFactory;
 import com.mobeelizer.java.api.MobeelizerErrorsBuilder;
 import com.mobeelizer.java.api.MobeelizerFile;
 import com.mobeelizer.java.api.MobeelizerModel;
+import com.mobeelizer.java.api.MobeelizerEntityVersion;
 import com.mobeelizer.java.api.MobeelizerOperationError;
+import com.mobeelizer.java.conflict.MobeelizerConflictData;
+import com.mobeelizer.java.conflict.MobeelizerConflictVersionJson;
 import com.mobeelizer.java.connection.MobeelizerConnectionService;
 import com.mobeelizer.java.errors.MobeelizerOperationErrorImpl;
 import com.mobeelizer.java.errors.MobeelizerOperationStatus;
@@ -57,6 +61,27 @@ public class MobeelizerSyncService {
 
     public void sync(final Iterable<Object> entities, final Iterable<MobeelizerFile> files, final MobeelizerSyncCallback callback) {
         sync(entities, files, callback, false);
+    }
+
+    public void getConflictHistory(final String model, String guid, final MobeelizerGetConflictHistoryCallback callback){
+        final MobeelizerConflictData conflictData;
+        
+    	File inputFile = null;
+        try {
+        	inputFile = connectionService.getConflictHistory(model, guid);
+        	
+        	conflictData = new MobeelizerConflictData(new FileInputStream(inputFile), File.createTempFile("mobeelizer", "input"));
+            
+        	callback.onFinishedWithSuccess(prepareConflictVersionsIterator(model, conflictData));
+        }
+        catch(Exception e){
+        	callback.onFinishedWithError(MobeelizerOperationErrorImpl.exception(e));
+        }
+        finally{
+        	if (inputFile != null && !inputFile.delete()) {
+                logger.warn("Cannot delete file " + inputFile.getAbsolutePath());
+            }
+        }
     }
 
     private void sync(final Iterable<Object> outputEntities, final Iterable<MobeelizerFile> outputFiles,
@@ -212,6 +237,76 @@ public class MobeelizerSyncService {
         return entities;
     }
 
+    private  Iterable<MobeelizerEntityVersion> prepareConflictVersionsIterator(final String model, MobeelizerConflictData data){
+        List<MobeelizerEntityVersion> entities = new ArrayList<MobeelizerEntityVersion>();
+
+        for (MobeelizerConflictVersionJson entity : data.getVersionsIterator()) {
+            if (hasDefinition) {
+            	MobeelizerEntityVersionImpl version = new MobeelizerEntityVersionImpl();
+            	version.setEntity(getModel(entity.getModel()).getEntityFromJsonEntity(entity));
+            	version.setUser(entity.getUser());
+            	version.setDevice(entity.getDevice());
+            	version.setDate(entity.getDate());
+                entities.add(version);
+            } else {
+            	Map<String, String> entityMap = new HashMap<String, String>(entity.getFields());
+            	entityMap.put("model", entity.getModel());
+                entityMap.put("guid", entity.getGuid());
+                entityMap.put("owner", entity.getOwner());
+            	MobeelizerEntityVersionImpl version = new MobeelizerEntityVersionImpl();
+            	version.setUser(entity.getUser());
+            	version.setDevice(entity.getDevice());
+            	version.setDate(entity.getDate());
+                version.setEntity(entityMap);
+                entities.add(version);
+            }
+        }
+        return entities;
+    }
+    
+    private class MobeelizerEntityVersionImpl implements MobeelizerEntityVersion {
+    	
+    	private String user;
+    	
+    	private Date date;
+    	
+    	private String device;
+    	
+    	private Object entity;
+    	
+    	public String getUser(){
+    		return user;
+    	}
+    	
+    	public Date getDate(){
+    		return date;
+    	}
+    	
+    	public String getDevice(){
+    		return device;
+    	}
+    	
+    	public Object getEntity(){
+    		return entity;
+    	}
+    	
+    	void setUser(String user){
+    		this.user = user;
+    	}
+
+    	void setDevice(String device){
+    		this.device = device;
+    	} 
+
+    	void setDate(Date date){
+    		this.date = date;
+    	}
+    	
+    	void setEntity(Object entity){
+    		this.entity = entity;
+    	}
+    }
+    
     private void prepareOutputFile(final File outputFile, final Iterable<Object> entities, final Iterable<MobeelizerFile> files,
             final MobeelizerErrorsBuilder errors) {
         MobeelizerOutputData outputData = null;

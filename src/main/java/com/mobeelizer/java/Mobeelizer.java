@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import org.apache.http.client.methods.HttpRequestBase;
 
 import com.mobeelizer.java.api.MobeelizerFile;
+import com.mobeelizer.java.api.MobeelizerEntityVersion;
 import com.mobeelizer.java.api.MobeelizerMode;
 import com.mobeelizer.java.api.MobeelizerModel;
 import com.mobeelizer.java.api.MobeelizerOperationError;
@@ -396,6 +397,22 @@ public class Mobeelizer {
     public void syncAndWait(final Iterable<Object> entities, final Iterable<MobeelizerFile> files,
             final MobeelizerSyncCallback callback) {
         syncService.sync(entities, files, callback);
+    }
+
+    /**
+     * Start getting conflicted entity versions. After finished callback will be invoked.
+     * 
+     * @param model
+     *            model name of conflicted entity
+     * @param guid
+     *            guid of conflicted entity
+     * @param callback
+     *            callback
+     * @since 1.7
+     * @see MobeelizerGetConflictHistoryCallback
+     */
+    public void getConflictHistory(String model, String guid, MobeelizerGetConflictHistoryCallback callback){
+    	syncService.getConflictHistory(model, guid, callback);
     }
 
     /**
