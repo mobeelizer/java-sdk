@@ -14,7 +14,7 @@ public interface MobeelizerGetConflictHistoryCallback  {
 	/**
      * Method invoked when the synchronization is finished with success. 
      * 
-     * @param entities
+     * @param versions
      *            entity versions
      * @since 1.7
      */

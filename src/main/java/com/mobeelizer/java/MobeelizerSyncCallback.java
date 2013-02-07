@@ -59,8 +59,8 @@ public interface MobeelizerSyncCallback {
     /**
      * Method invoked when the synchronization is finished with validation errors.
      * 
-     * @param errors
-     *            errors
+     * @param databaseError
+     *            validation errors
      * @since 1.0
      */
     void onSyncFinishedWithError(final MobeelizerErrors databaseError);
