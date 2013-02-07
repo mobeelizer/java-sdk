@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.7.0
+
+* Conflict resolving API added.
+
+[Full changelog](https://github.com/mobeelizer/java-sdk/compare/1.6.0...1.7.0) / [Sources](https://github.com/mobeelizer/java-sdk/tree/1.7.0)
+
+
 ## 1.4.0
 
 * Changes in error handling.

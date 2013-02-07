@@ -25,7 +25,7 @@ Mobeelizer SDK is also distibuted using Maven.
 		<dependency>
 			<groupId>com.mobeelizer</groupId>
 			<artifactId>java-sdk</artifactId>
-			<version>1.1.0</version>
+			<version>1.7.0</version>
 		</dependency>
 	</dependencies>
 	
